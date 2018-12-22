@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="hhttp://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <span th:text="${session.Users.username}"></span>
+
+    <LI class="odd" th:each="p:${pg}">
+        <H4><A th:href="" href="http://localhost:8080/myVote/Vote-view.action?entityId=21" th:text="${p.title}">哪个浏览器好用</A>
+        </H4>
+      </LI>
+</body>
+
+
+</html>

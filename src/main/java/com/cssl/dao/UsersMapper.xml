@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cssl.dao.UsersMapper">
+
+    <insert id="addUsers">
+
+         insert into vusers(username,password) values (#{username},#{password})
+
+    </insert>
+
+    <select id="selectUser" resultType="Users">
+        SELECT * FROM vusers WHERE username=#{username} AND password=#{password}
+    </select>
+
+    <select id="findUsers">
+        select * from vusers where username=#{username}
+    </select>
+
+</mapper>

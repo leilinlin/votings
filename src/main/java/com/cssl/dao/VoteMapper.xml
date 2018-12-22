@@ -1,0 +1,52 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--扫描dao-->
+<mapper namespace="com.cssl.dao.VoteMapper">
+    <!--  可以映射字段与实体不一样-->
+    <resultMap id="voteAndOptions" type="vote">
+        <id column="vid" property="vid"></id>
+    </resultMap>
+    <!--查询所有的主题和投票的数量-->
+    <select id="findAllVote" resultMap="voteAndOptions">
+
+        SELECT v.vid,v.title,COUNT(DISTINCT o.oid) itemNum,COUNT(DISTINCT r.uid)totalPoll
+        FROM vote v
+                 LEFT JOIN OPTIONS o ON v.vid=o.oid
+                 LEFT JOIN record r ON v.vid=r.rid
+
+       <if test="title !=null and title !=''">
+        where v.title like concat('%',#{title},'%')
+       </if>
+        GROUP BY v.vid,v.title
+
+    </select>
+
+    <!--查询单个的主题以及投票选项和投票人数-->
+    <resultMap id="oneVote" type="vote">
+
+        <id column="vid" property="vid"></id>
+
+    </resultMap>
+    <select id="findVoteByVoteId" resultMap="oneVote">
+
+        SELECT v.vid,v.vtype,title,COUNT(DISTINCT o.oid) itemNum,COUNT(DISTINCT r.rid) totalPoll
+        FROM `options` o
+                 RIGHT JOIN record r ON o.vid=r.vid
+                 RIGHT JOIN vote v ON v.vid=r.vid
+                 where v.vid=#{vid}
+    </select>
+
+    <!--添加主题-->
+    <insert id="addVote" keyColumn="vid" keyProperty="vid">
+
+        INSERT INTO vote (title,vtype) VALUES(#{title},#{vtype})
+
+    </insert>
+
+    <!--根据主题的名字查询主题的id-->
+    <select id="findVoteByTitleName" resultType="vote">
+        select * from vote where title=#{title}
+    </select>
+
+</mapper>

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<HEAD><META content="IE=11.0000"
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<TITLE>发布新投票</TITLE> <LINK href="http://localhost:8080/css/style.css" rel="stylesheet" type="text/css">
+<SCRIPT src="js/jquery-1.8.0.min.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">
+
+
+
+    $(function () {
+        $("#add").click(function () {
+            var op = "<P><INPUT name=\"optionName\" class=\"input-text\" type=\"text\"><a class=\"del\" href=\"javascript:void(0)\">删除</a></P>";
+            $("#voteoptions").append(op);
+        });
+
+        $("#title").blur(function () {
+            var title=$("#title").val();
+            $.post("verify",{"title":title},function (data) {
+                if(data=="1"){
+                    $("#tixing").html("主题已存在")
+                }else if(data=="2"){
+                    $("#tixing").html("");
+                }
+
+            })
+        });
+
+    })
+
+</SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.420"></HEAD> 
+<BODY>
+<DIV class="wrap" id="header"><IMG src="http://localhost:8080/static/images/logo.gif"> </DIV>
+<DIV class="wrap" id="navbar">
+    <DIV class="profile">您好,<span th:text="${session.Users.username}"></span> <SPAN class="return"><A href="http://localhost:8080/myVote/Subject-list.action">返回列表</A></SPAN>
+		 <SPAN class="addnew"><A href="add.html">添加新投票</A></SPAN>
+		 <SPAN class="modify"><A href="http://localhost:8080/myVote/Subject-modify.action">维护</A></SPAN>
+		 <SPAN class="return"><A 
+href="http://localhost:8080/myVote/User-exit.action">注销</A></SPAN>	 </DIV>
+<DIV class="search">
+<FORM action="Subject-search.action" method="post"><INPUT name="keywords" class="input-text" type="text"><INPUT name="submit" class="input-button" type="submit" value=""/>
+		 </FORM></DIV></DIV>
+
+<DIV class="box" id="voteManage">
+<H2>添加新投票</H2>
+<DIV class="content">
+<FORM onsubmit="return check();" action="addVote" method="post">
+<DL>
+  <DT>投票内容：</DT>
+  <DD><INPUT name="struts.token.name" type="hidden" value="token">
+      <INPUT name="token" type="hidden" value="B1XPKLEQ7DQ6DNVWKBARPOY4HLYYXDE6">
+      <INPUT name="subject.title" class="input-text" id="title" type="text">
+      <span id="tixing"></span>
+
+  </DD>
+  <DT>投票类型：</DT>
+  <DD><INPUT name="vtype" type="radio" value="0">单选
+      <INPUT name="vtype" type="radio" value="1">多选 </DD>
+  <DT>投票选项：</DT>
+  <DD id="voteoptions">
+  <P><INPUT name="optionName" class="input-text" type="text"></P>
+  <P><INPUT name="optionName" class="input-text" type="text"></P></DD>
+  <DT></DT>
+  <DD class="button"><INPUT type="image" src="http://localhost:8080/images/button_submit.gif">
+  					 <A id="add" href="javascript:void(0);">增加选项</A>
+                     <A href="http://localhost:8080/myVote/Subject-list.action">取消操作</A>
+  				 </DD></DL></FORM></DIV></DIV>
+<DIV class="wrap" id="footer">	北大青鸟 © 版权所有 </DIV></BODY></HTML>
