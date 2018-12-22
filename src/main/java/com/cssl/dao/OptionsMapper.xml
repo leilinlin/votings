@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cssl.dao.OptionsMapper">
+
+    <!--根据主题的ID查询主题的选项-->
+  <select id="findOptionsById" resultType="options">
+     select * from options where vid=#{vid}
+  </select>
+
+    <!--添加主题的选项-->
+    <insert id="addOptions">
+        INSERT INTO OPTIONS (optionName,vid) VALUES(#{optionName},#{vid})
+    </insert>
+
+   <!--根据主题id来查询投票选项id和每个选项所得的票数-->
+    <select id="findOptions" resultType="options">
+        SELECT o.*,COUNT(r.uid) poll FROM `options` o
+                                              LEFT JOIN record r ON o.oid = r.oid
+        WHERE o.vid=#{vid} GROUP BY r.oid
+    </select>
+
+</mapper>
